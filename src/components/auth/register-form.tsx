@@ -2,7 +2,7 @@
 import React, { useState, useTransition } from 'react';
 import CardWrapper from '@/components/auth/card-wrapper';
 import { useForm } from 'react-hook-form';
-import { LoginSchema } from '../../../shcemas';
+import { RegisterSchema } from '../../../shcemas';
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod';
 import {Input} from '@/components/ui/input'
@@ -10,26 +10,27 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
-import { login } from '../../../action/login';
+import { register } from '../../../action/register';
 
-function LoginForm() {
+function RegisterForm() {
 	const [error, setError] = useState<string | undefined>('')
 	const [success, setSuccess] = useState <string | undefined>('')
 	const [isPending , startTransition] = useTransition()
 
-	const form= useForm<z.infer<typeof LoginSchema>>({
-		resolver: zodResolver(LoginSchema),
+	const form= useForm<z.infer<typeof RegisterSchema>>({
+		resolver: zodResolver(RegisterSchema),
 		defaultValues:{
 			email:"",
-			password:""
+			password:"",
+			name: ""
 		}
 	})
 
-	const onSubmit = (value : z.infer<typeof LoginSchema>) =>{
+	const onSubmit = (value : z.infer<typeof RegisterSchema>) =>{
 		setError('')
 		setSuccess('')
 		startTransition(()=>{
-			login(value).then((data)=>{
+			register(value).then((data)=>{
 				setError(data.error);
 				setSuccess(data.success)
 			})
@@ -39,9 +40,9 @@ function LoginForm() {
 
 	return (
 		<CardWrapper
-			backButtonHref={'/auth/register'}
-			backButtonLabel={"Don't have a account?"}
-			headerLabel={'Welcome back!'}
+			backButtonHref={'/auth/login'}
+			backButtonLabel={"Already have a account?"}
+			headerLabel={'Create an account!'}
 			showSocial
 		>
 			<Form {...form}>
@@ -59,6 +60,20 @@ function LoginForm() {
 									<FormLabel>Email</FormLabel>
 									<FormControl>
 										<Input {...field} disabled={isPending} placeholder="Enter your email" type={'email'}/>
+									</FormControl>
+									<FormMessage/>
+								</FormItem>
+							)}
+						></FormField>
+
+						<FormField
+							control={form.control}
+							name="name"
+							render={({ field })=>(
+								<FormItem>
+									<FormLabel>Name</FormLabel>
+									<FormControl>
+										<Input {...field} disabled={isPending} placeholder="Enter your name" type={'text'}/>
 									</FormControl>
 									<FormMessage/>
 								</FormItem>
@@ -90,4 +105,4 @@ function LoginForm() {
 	);
 }
 
-export default LoginForm;
+export default RegisterForm;
