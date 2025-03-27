@@ -18,8 +18,10 @@
 				"name": "next"
 			}
 		],
+		"baseUrl": "./",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@auth": ["./auth.ts"]  // auth.ts dosyasına özel yol tanımla
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

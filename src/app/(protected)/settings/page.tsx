@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 async function Page() {
 	const session = await auth();
 
-	console.log(JSON.stringify(session));
+	// console.log(JSON.stringify(session));
 	return <div>{JSON.stringify(session)}
 
 		<form onSubmit={
